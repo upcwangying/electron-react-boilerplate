@@ -1,6 +1,6 @@
 name: Test
 
-on: push
+on: [push, pull_request]
 
 jobs:
   release:
@@ -17,11 +17,11 @@ jobs:
       - name: Install Node.js, NPM and Yarn
         uses: actions/setup-node@v1
         with:
-          node-version: 13
+          node-version: 14
 
       - name: yarn install
         run: |
-          yarn install
+          yarn install --frozen-lockfile
 
       - name: yarn test
         env:
@@ -29,7 +29,8 @@ jobs:
         run: |
           yarn package-ci
           yarn lint
-          yarn ts
+          yarn tsc
+          yarn test
 
 # Failing because virtual framebuffer not installed
 #          yarn build-e2e
